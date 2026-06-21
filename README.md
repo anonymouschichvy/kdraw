@@ -30,7 +30,7 @@ To prevent plotters from bleeding ink and closing loops, KDRAW's pre-smoothing k
 
 #### Region 1: Body Details (Dots of `i` & Colons)
 Observe how the dots of the letter `i` and colons are preserved as independent, clean path strokes rather than being merged or pruned:
-![Region 1 Zoom](docscomparison_region1.png)
+![Region 1 Zoom](docs/comparison_region1.png)
 
 ---
 
