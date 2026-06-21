@@ -1,7 +1,5 @@
 # 🎛️ KDRAW: Topological Centerline SVG Vectorizer
 
-**KDRAW is a high-precision topological centerline vectorizer that converts raster graphics into optimized, smooth single-stroke SVGs for CNC plotters and CAM software.**
-
 ```
     __  ______  ____  ___ _      __
    / / / / __ \/ __ \/   | | /| / /
