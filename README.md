@@ -16,6 +16,13 @@
 
 ## 📸 Visual Documentation & Evidence
 
+
+### 💻 Running the Vectorizer
+To convert a text image into optimized single-line vectors using custom configuration:
+```bash
+python convert_to_svg.py a.jpg output_centerline.svg --centerline --no-adaptive --morph-close 5 --min-spur 1 --upscale 8 --morph-close 5
+```
+
 Here is the visual evidence of the conversion from the high-resolution raster image ([input.jpg](input.jpg)) to the thinned centerline stroke paths ([output_centerline.svg](output_centerline.svg)).
 
 ### 1. Full-Page Comparison (Input vs. SVG Output)
@@ -82,40 +89,197 @@ Below is the exhaustive pseudocode and logic breakdown of every helper and proce
 * **Output**: Smoothed coordinate array
 * **Logic**:
   1. If path has less than 3 points, return original path.
-  2. Detect if path is closed by measuring Euclidean distance between start and end points:
-     - `is_closed = norm(path[0] - path[-1]) < 1.0`
-  3. For each iteration:
-     - Create a temporary copy of coordinates.
-     - If `is_closed`: 
-       - Update each index `i` (excluding the last endpoint) to be:
-         \[
-         p_i = (1 - w) \cdot p_i + w \cdot 0.5 \cdot (p_{i-1} + p_{i+1})
-         \]
-         where `i-1` and `i+1` wrap around using modulo arithmetic.
-       - Set the last point `path[-1] = path[0]` to maintain cycle closure.
-     - Else (open path):
-       - For indices `1` to `len(path) - 2` (keeping endpoints fixed):
-         \[
-         p_i = (1 - w) \cdot p_i + w \cdot 0.5 \cdot (p_{i-1} + p_{i+1})
-         \]
+### 2. `smooth_paths_laplacian(path, iterations, w)`
+
+**Input:** Coordinate array `path`, iteration count `iterations`, smoothing weight `w`  
+**Output:** Laplacian-smoothed coordinate array
+
+#### Algorithm
+
+1. If the path contains fewer than **3 points**, return the original path.
+
+2. Determine whether the path is closed:
+
+```math
+\text{is\_closed}
+=
+\left\|
+\mathbf{p}_0 - \mathbf{p}_{n-1}
+\right\|
+< 1.0
+```
+
+3. Repeat for each smoothing iteration:
+
+   - Create a temporary copy of the coordinate array.
+   - Apply the update rules below.
+
+##### Closed Path
+
+For each vertex \( \mathbf{p}_i \) (excluding the duplicated endpoint):
+
+```math
+\mathbf{p}_i'
+=
+(1-w)\mathbf{p}_i
++
+w
+\left(
+\frac{\mathbf{p}_{i-1} + \mathbf{p}_{i+1}}{2}
+\right)
+```
+
+with cyclic indexing:
+
+```math
+\mathbf{p}_{i-1}
+=
+\mathbf{p}_{(i-1)\bmod n}
+```
+
+```math
+\mathbf{p}_{i+1}
+=
+\mathbf{p}_{(i+1)\bmod n}
+```
+
+Maintain closure after updating:
+
+```math
+\mathbf{p}_{n-1}
+=
+\mathbf{p}_0
+```
+
+##### Open Path
+
+Keep endpoints fixed and update interior vertices:
+
+```math
+i = 1, 2, \ldots, n-2
+```
+
+```math
+\mathbf{p}_i'
+=
+(1-w)\mathbf{p}_i
++
+w
+\left(
+\frac{\mathbf{p}_{i-1} + \mathbf{p}_{i+1}}{2}
+\right)
+```
+
+---
 
 ### 3. `smooth_paths_chaikin(path, iterations)`
-* **Input**: Coordinate array `path`, passes count `iterations`
-* **Output**: Corner-cut coordinate array
-* **Logic**:
-  1. If path has less than 3 points, return original path.
-  2. For each iteration:
-     - If `is_closed`:
-       - For each line segment `[p_i, p_{i+1}]`:
-         - Add new vertex `q = 0.75 * p_i + 0.25 * p_{i+1}`
-         - Add new vertex `r = 0.25 * p_i + 0.75 * p_{i+1}`
-       - Append the first generated point to the end to close the loop.
-     - Else (open path):
-       - Keep original start point `p_0` as the first point.
-       - For each inner segment `[p_i, p_{i+1}]`:
-         - Add `q = 0.75 * p_i + 0.25 * p_{i+1}`
-         - Add `r = 0.25 * p_i + 0.75 * p_{i+1}`
-       - Keep original end point `p_n` as the last point.
+
+**Input:** Coordinate array `path`, iteration count `iterations`  
+**Output:** Chaikin corner-cut smoothed coordinate array
+
+#### Algorithm
+
+1. If the path contains fewer than **3 points**, return the original path.
+
+2. Repeat for each iteration.
+
+##### Closed Path
+
+For every segment:
+
+```math
+[\mathbf{p}_i,\mathbf{p}_{i+1}]
+```
+
+Generate:
+
+```math
+\mathbf{q}
+=
+0.75\,\mathbf{p}_i
++
+0.25\,\mathbf{p}_{i+1}
+```
+
+```math
+\mathbf{r}
+=
+0.25\,\mathbf{p}_i
++
+0.75\,\mathbf{p}_{i+1}
+```
+
+Append the first generated point to the end of the sequence to preserve closure.
+
+##### Open Path
+
+Preserve endpoints:
+
+```math
+\mathbf{p}_0
+\qquad\text{and}\qquad
+\mathbf{p}_{n-1}
+```
+
+For each interior segment:
+
+```math
+[\mathbf{p}_i,\mathbf{p}_{i+1}]
+```
+
+Generate:
+
+```math
+\mathbf{q}
+=
+0.75\,\mathbf{p}_i
++
+0.25\,\mathbf{p}_{i+1}
+```
+
+```math
+\mathbf{r}
+=
+0.25\,\mathbf{p}_i
++
+0.75\,\mathbf{p}_{i+1}
+```
+
+Resulting point sequence:
+
+```math
+[
+\mathbf{p}_0,\,
+\mathbf{q}_1,\,
+\mathbf{r}_1,\,
+\mathbf{q}_2,\,
+\mathbf{r}_2,\,
+\dots,\,
+\mathbf{p}_{n-1}
+]
+```
+
+#### Chaikin Corner-Cutting Rule
+
+For a segment connecting points \( \mathbf{A} \) and \( \mathbf{B} \):
+
+```math
+\mathbf{Q}
+=
+\frac{3}{4}\mathbf{A}
++
+\frac{1}{4}\mathbf{B}
+```
+
+```math
+\mathbf{R}
+=
+\frac{1}{4}\mathbf{A}
++
+\frac{3}{4}\mathbf{B}
+```
+
+Repeated application progressively removes sharp corners and converges toward a smooth curve.
 
 ### 4. `optimize_paths(contours, max_join_dist)`
 * **Input**: List of curves `contours`, pen-down merging threshold `max_join_dist`
