@@ -20,7 +20,7 @@
 ### 💻 Running the Vectorizer
 To convert a text image into optimized single-line vectors using custom configuration:
 ```bash
-python convert_to_svg.py input.jpg output_centerline.svg --centerline --no-adaptive --morph-close 5 --min-spur 1 --upscale 8 --morph-close 5
+python main.py input.jpg output_centerline.svg --centerline --no-adaptive --morph-close 5 --min-spur 1 --upscale 8 --morph-close 5
 ```
 
 Here is the visual evidence of the conversion from the high-resolution raster image ([input.jpg](input.jpg)) to the thinned centerline stroke paths ([output_centerline.svg](output_centerline.svg)).
@@ -76,7 +76,7 @@ graph TD
 
 ## 📖 Complete Code Logic & Detailed Algorithms
 
-Below is the exhaustive pseudocode and logic breakdown of every helper and processing routine in the KDRAW engine (`convert_to_svg.py`).
+Below is the exhaustive pseudocode and logic breakdown of every helper and processing routine in the KDRAW engine (`main.py` and the `kdraw` package).
 
 ### 1. `get_hex_color(val, has_alpha)`
 
@@ -544,7 +544,7 @@ pip install opencv-python scikit-image numpy pillow
 ### 💻 Running the Vectorizer
 To convert a text image into optimized single-line vectors using the recommended defaults:
 ```bash
-python convert_to_svg.py input.jpg output_centerline.svg --centerline --no-adaptive
+python main.py input.jpg output_centerline.svg --centerline --no-adaptive
 ```
 
 ---
