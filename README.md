@@ -23,14 +23,14 @@ To convert a text image into optimized single-line vectors using custom configur
 python main.py input.jpg output_centerline.svg --centerline --no-adaptive --morph-close 5 --min-spur 1 --upscale 8 --morph-close 5
 ```
 
-Here is the visual evidence of the conversion from the high-resolution raster image ([input.jpg](input.jpg)) to the thinned centerline stroke paths ([output_centerline.svg](output_centerline.svg)).
+Here is the visual evidence of the conversion from the high-resolution raster image ([input.jpg](docs/input.jpg)) to the thinned centerline stroke paths ([output_centerline.svg](output_centerline.svg)).
 
 ### 1. Full-Page Comparison (Input vs. SVG Output)
-Below is the full-page overview comparison. The left shows the original raster text ([input.jpg](input.jpg)) and the right shows the generated thinned centerline paths ([output_centerline.svg](docs/output_centerline.svg)).
+Below is the full-page overview comparison. The left shows the original raster text ([input.jpg](docs/input.jpg)) and the right shows the generated thinned centerline paths ([output_centerline.svg](docs/output_centerline.svg)).
 # <p align="center"> <img src="docs/comparison_full.png" alt="Full Page Comparison" style="max-width:100%;"/> </p>
 
 ### 1.1 Full-Page Comparison Drawing (Input vs. SVG Output)
-Below is the full-page drawing overview comparison. The left shows the original raster drawing ([input_draw.png](input.png)) and the right shows the generated thinned centerline paths ([output_centerline.svg](docs/output_centerline.svg)).
+Below is the full-page drawing overview comparison. The left shows the original raster drawing ([input_draw.png](docs/input_draw.png)) and the right shows the generated thinned centerline paths ([output_centerline.svg](docs/output_centerline.svg)).
 # <p align="center"> <img src="docs/comparison_draw.png" alt="Full Drawing Comparison" style="max-width:90%;"/> </p>
 
 ### 2. Zoomed-In Details & Loop Preservation
