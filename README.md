@@ -29,6 +29,10 @@ Here is the visual evidence of the conversion from the high-resolution raster im
 Below is the full-page overview comparison. The left shows the original raster text ([input.jpg](input.jpg)) and the right shows the generated thinned centerline paths ([output_centerline.svg](docs/output_centerline.svg)).
 # <p align="center"> <img src="docs/comparison_full.png" alt="Full Page Comparison" style="max-width:100%;"/> </p>
 
+### 1.1 Full-Page Comparison Drawing (Input vs. SVG Output)
+Below is the full-page drawing overview comparison. The left shows the original raster drawing ([input_draw.png](input.png)) and the right shows the generated thinned centerline paths ([output_centerline.svg](docs/output_centerline.svg)).
+# <p align="center"> <img src="docs/comparison_draw.png" alt="Full Drawing Comparison" style="max-width:90%;"/> </p>
+
 ### 2. Zoomed-In Details & Loop Preservation
 To prevent plotters from bleeding ink and closing loops, KDRAW's pre-smoothing keeps character loops (`a`, `e`, `o`, `u`) perfectly open. The left shows the input pixels and the right shows the single-line thinned paths.
 
@@ -38,6 +42,10 @@ To prevent plotters from bleeding ink and closing loops, KDRAW's pre-smoothing k
 #### Region 1: Body Details (Dots of `i` & Colons)
 Observe how the dots of the letter `i` and colons are preserved as independent, clean path strokes rather than being merged or pruned:
 # <p align="center"> <img src="docs/comparison_region1.png" alt="Region 1 Zoom" style="max-width:100%;"/> </p>
+
+### 2.1 Zoomed-In Details & Loop Preservation
+Observe how the lines are preserved as independent, clean path strokes rather than being merged or pruned:
+# <p align="center"> <img src="docs/zoom_comparison_draw.png" alt="Drawing Zoom" style="max-width:100%;"/> </p>
 
 ## ⚡ Key Highlights & Core Capabilities
 
