@@ -23,7 +23,7 @@ To convert a text image into optimized single-line vectors using custom configur
 python main.py input.jpg output_centerline.svg --centerline --no-adaptive --morph-close 5 --min-spur 1 --upscale 8 --morph-close 5
 ```
 
-Here is the visual evidence of the conversion from the high-resolution raster image ([input.jpg](docs/input.jpg)) to the thinned centerline stroke paths ([output_centerline.svg](output_centerline.svg)).
+Here is the visual evidence of the conversion from the high-resolution raster image ([input.jpg](docs/input.jpg)) to the thinned centerline stroke paths ([output_centerline.svg](docs/output_centerline.svg)).
 
 ### 1. Full-Page Comparison (Input vs. SVG Output)
 Below is the full-page overview comparison. The left shows the original raster text ([input.jpg](docs/input.jpg)) and the right shows the generated thinned centerline paths ([output_centerline.svg](docs/output_centerline.svg)).
