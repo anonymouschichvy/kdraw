@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools>=61.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "kdraw"
+version = "0.1.0"
+description = "Topological Centerline SVG Vectorizer for CNC plotters, laser cutters, and CAM software."
+readme = "README.md"
+requires-python = ">=3.8"
+license = "MIT"
+authors = [
+    { name = "Ervin James P. Regio" }
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+    "Topic :: Multimedia :: Graphics :: Vectorization",
+    "Topic :: Scientific/Engineering :: Image Processing",
+]
+dependencies = [
+    "numpy>=1.20.0",
+    "pillow>=9.0.0",
+    "opencv-python>=4.5.0",
+    "scikit-image>=0.19.0",
+]
+
+[project.optional-dependencies]
+smooth = [
+    "vtracer>=0.6.0"
+]
+
+[project.urls]
+Homepage = "https://github.com/anonymouschichvy/kdraw"
+"Bug Tracker" = "https://github.com/anonymouschichvy/kdraw/issues"
+
+[project.scripts]
+kdraw = "kdraw.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["kdraw*"]
